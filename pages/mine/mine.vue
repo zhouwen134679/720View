@@ -1,8 +1,8 @@
 <template>
-	<view class="shade" v-if="shade">
+	<!-- <view class="shade" v-if="shade">
 		<image class="one" v-show="one" src="../../static/红包.svg" mode="" @click="toTwo"></image>
 		<image class="two" v-show="two" src="../../static/红包2.svg" mode="" @click="end"></image>
-	</view>
+	</view> -->
 	<pageBack :titleInfo="titleInfo"></pageBack>
 	<view class="content">
 		<view class="container">
@@ -18,7 +18,7 @@
 								已连续签到{{signDays}}天
 							</view>
 							<view>
-								当前香火值：{{userInfo.balance}} 点
+								当前香火值：{{userInfo.balance || 0}} 点
 							</view>
 						</view>
 					</view>

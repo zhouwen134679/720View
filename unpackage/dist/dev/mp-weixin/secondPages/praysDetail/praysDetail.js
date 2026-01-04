@@ -91,7 +91,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     b: $data.imageShow
   }, $data.imageShow ? {
-    c: common_assets._imports_0$8,
+    c: common_assets._imports_0$7,
     d: common_vendor.o((...args) => $options.explain && $options.explain(...args))
   } : {
     e: common_vendor.t((_a = $data.currentSign) == null ? void 0 : _a.title),

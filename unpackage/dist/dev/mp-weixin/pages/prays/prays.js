@@ -104,7 +104,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
     a: $data.isShaking ? 1 : "",
     b: common_vendor.o((...args) => $options.closeFirstVisitPopup && $options.closeFirstVisitPopup(...args)),
-    c: common_vendor.sr("firstVisitPopup", "5e3e02e2-2"),
+    c: common_vendor.sr("firstVisitPopup", "63f725a1-2"),
     d: common_vendor.p({
       type: "center",
       isMaskClick: false

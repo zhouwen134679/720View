@@ -2,7 +2,6 @@
 const common_vendor = require("../../common/vendor.js");
 const store_userInfo = require("../../store/userInfo.js");
 const apis_user = require("../../apis/user.js");
-const common_assets = require("../../common/assets.js");
 const pageBack = () => "../../components/title/title.js";
 const tabBar = () => "../../components/tabbar/tabbar.js";
 const IncenseFab = () => "../../components/incense-fab/incense-fab.js";
@@ -191,30 +190,21 @@ if (!Math) {
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
-    a: $data.shade
-  }, $data.shade ? {
-    b: $data.one,
-    c: common_assets._imports_0$3,
-    d: common_vendor.o((...args) => $options.toTwo && $options.toTwo(...args)),
-    e: $data.two,
-    f: common_assets._imports_1,
-    g: common_vendor.o((...args) => $options.end && $options.end(...args))
-  } : {}, {
-    h: common_vendor.p({
+    a: common_vendor.p({
       titleInfo: $data.titleInfo
     }),
-    i: $data.userInfo && Object.keys($data.userInfo).length > 0
+    b: $data.userInfo && Object.keys($data.userInfo).length > 0
   }, $data.userInfo && Object.keys($data.userInfo).length > 0 ? {
-    j: $data.userInfo.avatarurl,
-    k: common_vendor.t($data.userInfo.nickname),
-    l: common_vendor.t($data.signDays),
-    m: common_vendor.t($data.userInfo.balance),
-    n: common_vendor.o((...args) => $options.toSet && $options.toSet(...args)),
-    o: common_vendor.o(($event) => $options.signIn())
+    c: $data.userInfo.avatarurl,
+    d: common_vendor.t($data.userInfo.nickname),
+    e: common_vendor.t($data.signDays),
+    f: common_vendor.t($data.userInfo.balance || 0),
+    g: common_vendor.o((...args) => $options.toSet && $options.toSet(...args)),
+    h: common_vendor.o(($event) => $options.signIn())
   } : {
-    p: common_vendor.o((...args) => $options.toLogin && $options.toLogin(...args))
+    i: common_vendor.o((...args) => $options.toLogin && $options.toLogin(...args))
   }, {
-    q: common_vendor.f($data.otherPage, (item, k0, i0) => {
+    j: common_vendor.f($data.otherPage, (item, k0, i0) => {
       return {
         a: item.svg,
         b: common_vendor.t(item.name),

@@ -36,6 +36,12 @@ const _sfc_main = {
     IncenseFab
   },
   methods: {
+    // ========== 新增：价格格式化方法 ==========
+    formatPrice(price) {
+      const num = Number(price);
+      return isNaN(num) ? "0.00" : num.toFixed(2);
+    },
+    // ========== 原有方法 ==========
     // 洗牌算法 进行随机操作
     randomRecommendList(count) {
       const shuffled = [...this.list];
@@ -47,52 +53,69 @@ const _sfc_main = {
     },
     setActiveGrid(index, item) {
       this.activeIndex = index;
-      apis_shop.gridSearchShopAPI(
-        item.grid
-      ).then((res) => {
-        this.list = res.message.map((item2) => {
-          return {
-            ...item2,
-            imageUrl: JSON.parse(item2.imageUrl)
-          };
-        });
+      apis_shop.gridSearchShopAPI(item.grid).then((res) => {
+        if (res && res.message) {
+          this.list = res.message.map((item2) => {
+            return {
+              ...item2,
+              imageUrl: JSON.parse(item2.imageUrl || "[]")
+              // 容错：imageUrl 为空时解析为空数组
+            };
+          });
+        } else {
+          this.list = [];
+        }
+      }).catch((err) => {
+        common_vendor.index.__f__("error", "at pages/shop/shop.vue:139", "分类查询失败：", err);
+        this.list = [];
       });
     },
     // 获取种类
     getGrid() {
       apis_shop.getShopGridAPI().then((res) => {
-        const filteredList = res.message.filter((item) => item.grid !== "其他");
+        const originalList = (res == null ? void 0 : res.message) || [];
+        const filteredList = originalList.filter((item) => (item == null ? void 0 : item.grid) !== "其他");
         const shuffleArray = (array) => {
-          for (let i = array.length - 1; i > 0; i--) {
+          const newArray = [...array];
+          for (let i = newArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
           }
-          return array;
+          return newArray;
         };
         const shuffledList = shuffleArray(filteredList);
-        const selectedItems = shuffledList.slice(0, 3);
-        this.gridList = [{
-          grid: "全部"
-        }, ...selectedItems, {
-          grid: "其他"
-        }];
+        const selectedItems = shuffledList.length > 0 ? shuffledList.slice(0, 3) : [];
+        this.gridList = [{ grid: "全部" }, ...selectedItems, { grid: "其他" }];
+      }).catch((err) => {
+        common_vendor.index.__f__("error", "at pages/shop/shop.vue:171", "获取分类列表失败：", err);
+        this.gridList = [{ grid: "全部" }, { grid: "其他" }];
       });
     },
     // 获取商品数据
     getShopList() {
       apis_shop.getShopListAPI().then((res) => {
-        this.list = res.message.map((item) => {
-          return {
-            ...item,
-            imageUrl: JSON.parse(item.imageUrl)
-          };
-        });
-        this.recommendList = this.randomRecommendList(5);
+        if (res && res.message) {
+          this.list = res.message.map((item) => {
+            return {
+              ...item,
+              imageUrl: JSON.parse(item.imageUrl || "[]")
+              // 容错：imageUrl 为空时解析为空数组
+            };
+          });
+          this.recommendList = this.randomRecommendList(5);
+        } else {
+          this.list = [];
+          this.recommendList = [];
+        }
+      }).catch((err) => {
+        common_vendor.index.__f__("error", "at pages/shop/shop.vue:195", "获取商品列表失败：", err);
+        this.list = [];
+        this.recommendList = [];
       });
     },
     // 获取商品页面
     toShowDetail(id) {
-      common_vendor.index.__f__("log", "at pages/shop/shop.vue:175", id);
+      common_vendor.index.__f__("log", "at pages/shop/shop.vue:202", id);
       common_vendor.index.navigateTo({
         url: `/secondPages/shopDetail/shopDetail?shopId=${id}`
       });
@@ -135,7 +158,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       return {
         a: item.imageUrl[0],
         b: common_vendor.t(item.shopname),
-        c: common_vendor.t(item.price.toFixed(2)),
+        c: common_vendor.t($options.formatPrice(item.price)),
         d: common_vendor.o(($event) => $options.toShowDetail(item.id), item.id),
         e: item.id
       };
@@ -144,7 +167,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       return {
         a: item.imageUrl[0],
         b: common_vendor.t(item.shopname),
-        c: common_vendor.t(item.price.toFixed(2)),
+        c: common_vendor.t($options.formatPrice(item.price)),
         d: index,
         e: common_vendor.o(($event) => $options.toShowDetail(item.id), index)
       };

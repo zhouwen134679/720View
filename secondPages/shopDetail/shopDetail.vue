@@ -11,28 +11,39 @@
 		<view class="contentInfo">
 			<view class="price">
 				<view class="">
-					<text>香火值</text><text style="margin: 0 10rpx;">{{contentInfo[0]?.price}}</text><text>兑换</text>
+					<text>{{ contentInfo[0]?.grid === '公益' ? '捐款金额' : '香火值' }}</text><text style="margin: 0 10rpx;">{{contentInfo[0]?.price}}</text><text>{{ contentInfo[0]?.grid === '公益' ? '元' : '兑换' }}</text>
 				</view>
 			</view>
 			<view class="shopName">
-				<text>旗舰店</text>
+				<text v-if="contentInfo[0]?.grid !== '公益'">旗舰店</text>
 				{{contentInfo[0]?.shopname}}
 			</view>
 			<view class="introduce">
-				<text>退货包运费</text>
-				<text>·</text>
-				<text>全场包邮</text>
-				<text>·</text>
-				<text>7天无理由退货</text>
-				<text>·</text>
-				<text>极速退款</text>
+				<template v-if="contentInfo[0]?.grid === '公益'">
+					<text>爱心捐赠</text>
+					<text>·</text>
+					<text>公益项目</text>
+					<text>·</text>
+					<text>透明公开</text>
+					<text>·</text>
+					<text>感谢支持</text>
+				</template>
+				<template v-else>
+					<text>退货包运费</text>
+					<text>·</text>
+					<text>全场包邮</text>
+					<text>·</text>
+					<text>7天无理由退货</text>
+					<text>·</text>
+					<text>极速退款</text>
+				</template>
 			</view>
 		</view>
 		<view class="separate"></view>
 		<view class="shopDetail">
 			<view class="detail">
-				<text class="detailTitle">产品详情</text>
-				<view class="detailInfo">暂无介绍...</view>
+				<text class="detailTitle">{{ contentInfo[0]?.grid === '公益' ? '公益背景' : '产品详情' }}</text>
+				<view class="detailInfo">{{ contentInfo[0]?.grid === '公益' ? '暂无公益项目介绍...' : '暂无介绍...' }}</view>
 				<view v-for="item in contentInfo[0].imageUrl">
 					<image :src="item" mode="aspectFill"></image>
 				</view>
@@ -46,7 +57,7 @@
 					@click="collect" mode=""></image>
 			</view>
 			<view class="buy" @click="toBuy">
-				立即兑换
+				{{ contentInfo[0]?.grid === '公益' ? '捐赠款项' : '立即兑换' }}
 			</view>
 		</view>
 	</view>
@@ -90,14 +101,16 @@
 		},
 		onLoad(option) {
 			// 获取商品详情
-			getShopDetailAPI(option.shopId).then((res) => {
-				this.contentInfo = res.message.map((item) => {
-					return {
-						...item,
-						imageUrl: JSON.parse(item.imageUrl)
-					}
+				getShopDetailAPI(option.shopId).then((res) => {
+					this.contentInfo = res.message.map((item) => {
+						return {
+							...item,
+							imageUrl: JSON.parse(item.imageUrl)
+						}
+					})
+					// 设置动态标题
+					this.titleInfo.title = this.contentInfo[0]?.grid === '公益' ? '公益项目' : '商品详情'
 				})
-			})
 			this.shopId = option.shopId
 
 			// 获取商品是否收藏

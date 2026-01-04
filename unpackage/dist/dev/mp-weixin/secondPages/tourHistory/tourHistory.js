@@ -144,7 +144,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     g: common_vendor.o((...args) => $options.confirmDeleteHistory && $options.confirmDeleteHistory(...args)),
     h: common_vendor.o((...args) => $options.cancelDeleteHistory && $options.cancelDeleteHistory(...args))
   } : {}) : {
-    i: common_assets._imports_0$7
+    i: common_assets._imports_0$6
   }) : {});
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-6a4f848d"]]);

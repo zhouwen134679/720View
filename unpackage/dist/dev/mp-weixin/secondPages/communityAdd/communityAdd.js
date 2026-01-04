@@ -199,7 +199,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     g: $data.imageList.length < 9
   }, $data.imageList.length < 9 ? {
-    h: common_assets._imports_0$5,
+    h: common_assets._imports_0$4,
     i: common_vendor.o((...args) => $options.chooseImage && $options.chooseImage(...args))
   } : {}, {
     j: common_vendor.t($data.unitName),

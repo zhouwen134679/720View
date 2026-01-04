@@ -35,61 +35,61 @@
 		<view class="orderInfo">
 			<view class="info">
 				<view class="infoItem">
-					<view class="title">
-						实付款
+						<view class="title">
+							实付款
+						</view>
+						<view class="">
+							合计￥{{orderData[0].payment}}
+						</view>
 					</view>
-					<view class="">
-						合计￥{{orderData[0].payment}}
+					<view class="infoItem">
+						<view class="title">
+							订单编号
+						</view>
+						<view class="">
+							{{orderData[0].order_id}}
+						</view>
 					</view>
-				</view>
-				<view class="infoItem">
-					<view class="title">
-						订单编号
+					<view class="infoItem">
+						<view class="title">
+							支付方式
+						</view>
+						<view class="">
+							{{orderData[0].payment_type = 1 ? '商城支付' : '微信支付'}}
+						</view>
 					</view>
-					<view class="">
-						{{orderData[0].order_id}}
+					<view class="infoItem">
+						<view class="title">
+							支付时间
+						</view>
+						<view class="">
+							{{formatDate(orderData[0].pay_time)}}
+						</view>
 					</view>
-				</view>
-				<view class="infoItem">
-					<view class="title">
-						支付方式
+					<view class="infoItem">
+						<view class="title">
+							下单时间
+						</view>
+						<view class="">
+							{{formatDate(orderData[0].create_time)}}
+						</view>
 					</view>
-					<view class="">
-						{{orderData[0].payment_type = 1 ? '商城支付' : '微信支付'}}
+					<view class="infoItem">
+						<view class="title">
+							{{orderData[0].grid === '公益' ? '捐赠人信息' : '收货信息'}}
+						</view>
+						<view class="">
+							{{orderData[0].name}}-{{orderData[0].mobile}}
+						</view>
 					</view>
-				</view>
-				<view class="infoItem">
-					<view class="title">
-						支付时间
+					<view class="infoItem" v-if="orderData[0].grid !== '公益'">
+						<view class="title">
+							收货地址
+						</view>
+						<view class="">
+							{{orderData[0].province_id}}{{orderData[0].city_id}}{{orderData[0].district_id}}{{orderData[0].remark}}
+						</view>
 					</view>
-					<view class="">
-						{{formatDate(orderData[0].pay_time)}}
-					</view>
-				</view>
-				<view class="infoItem">
-					<view class="title">
-						下单时间
-					</view>
-					<view class="">
-						{{formatDate(orderData[0].create_time)}}
-					</view>
-				</view>
-				<view class="infoItem">
-					<view class="title">
-						收货信息
-					</view>
-					<view class="">
-						{{orderData[0].name}}-{{orderData[0].mobile}}
-					</view>
-				</view>
-				<view class="infoItem">
-					<view class="title">
-						收货地址
-					</view>
-					<view class="">
-						{{orderData[0].province_id}}{{orderData[0].city_id}}{{orderData[0].district_id}}{{orderData[0].remark}}
-					</view>
-				</view>
 			</view>
 		</view>
 	</view>

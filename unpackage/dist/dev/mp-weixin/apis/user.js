@@ -85,21 +85,6 @@ const getContinuousSignInDaysAPI = (openid) => {
     }
   });
 };
-const incensePayAPI = ({
-  user_id,
-  amount,
-  pay_method = "wechat"
-}) => {
-  return utils_request.request({
-    url: "/user/incensePay",
-    method: "POST",
-    data: {
-      user_id,
-      amount,
-      pay_method
-    }
-  });
-};
 const visitCountAPI = () => {
   return utils_request.request({
     url: "/user/visitCount",
@@ -111,7 +96,6 @@ exports.checkBalanceZeroAPI = checkBalanceZeroAPI;
 exports.editNicknameAPI = editNicknameAPI;
 exports.getContinuousSignInDaysAPI = getContinuousSignInDaysAPI;
 exports.getOpenIdAPI = getOpenIdAPI;
-exports.incensePayAPI = incensePayAPI;
 exports.signInAPI = signInAPI;
 exports.userVisitCountAPI = userVisitCountAPI;
 exports.visitCountAPI = visitCountAPI;

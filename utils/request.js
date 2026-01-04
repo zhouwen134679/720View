@@ -1,5 +1,7 @@
-const domain = 'https://duoxie.cc.cd/mazu';
-export const base_url = `${domain}:${wx.getSystemInfoSync().platform === 'devtools' ? 8899 : 6869}`;
+// const domain = 'https://duoxie.cc.cd/mazu';
+const domain = 'https://111.230.37.198';
+// 正确拼接base_url（区分环境端口）
+export const base_url = `${domain}:${wx.getSystemInfoSync().platform === 'devtools' ? '' : 6869}`;
 export const ai_base_url = 'http://127.0.0.1:8080';
 const timeout = 50000;
 
@@ -14,10 +16,11 @@ export default (params) => {
 	let method = (params.method || "get").toLowerCase();
 	let data = params.data || {};
 
-	// 核心修改：强制AI白名单接口走ai_base_url，无视useAiUrl参数
-	const finalBaseUrl = isAiWhiteList(url) ? ai_base_url : domain;
+	// 修复：使用拼接好的base_url，而非原始domain
+	const finalBaseUrl = isAiWhiteList(url) ? ai_base_url : base_url;
 
 	const token = uni.getStorageSync('token');
+	// 初始化请求头：先保留外部传入的头，再设置默认头（外部头优先）
 	let header = {
 		'Content-Type': 'application/json;charset=UTF-8',
 		'Tenant-Id': uni.getStorageSync('tenantId') || 'xxx',
@@ -25,24 +28,25 @@ export default (params) => {
 	};
 
 	// 非AI白名单接口：添加Token头（保留原有认证逻辑）
-	if (!isAiWhiteList(url)) {
-		header['Blade-Auth'] = token || '';
-		header['Authorization'] = token || '';
+	console.log('是否为非AI接口：', !isAiWhiteList(url));
+	console.log('获取到的token：', token); // 打印token，确认是否真的存在
+	if (!isAiWhiteList(url) && token) { // 增加token存在判断，避免传入空字符串
+		header['Blade-Auth'] = token;
+		header['Authorization'] = token;
 	}
 
-	// ========== 修复：POST请求头不覆盖AI接口的自定义头 ==========
-	if (method === "post" && !isAiWhiteList(url)) { // AI接口的POST不覆盖头
-		header = {
-			'Content-Type': 'application/json'
-		};
+	// 修复：POST请求不覆盖整个header，只补充Content-Type（避免Token头丢失）
+	if (method === "post" && !isAiWhiteList(url)) {
+		// 只设置Content-Type，不覆盖原有header（用赋值而非重新定义）
+		header['Content-Type'] = 'application/json';
 	}
 
 	// 调试：打印关键信息，方便排查
 	console.log('===== 请求调试信息 =====');
-	console.log('请求地址:', finalBaseUrl + url); // 验证是否为127.0.0.1:8080
-	console.log('是否为AI接口:', isAiWhiteList(url)); // 验证是否命中白名单
+	console.log('请求地址:', finalBaseUrl + url);
+	console.log('是否为AI接口:', isAiWhiteList(url));
 	console.log('是否免Token:', isAiWhiteList(url));
-	console.log('请求头:', header);
+	console.log('最终请求头:', header); // 打印最终请求头，确认Token是否存在
 
 	return new Promise((resolve, reject) => {
 		// 移除：uni.showLoading 加载框

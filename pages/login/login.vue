@@ -48,11 +48,13 @@
 				uni.login({
 					provider: 'weixin',
 					success: function(loginRes) {
+						console.log(1123)
 						// 登录成功
 						uni.getUserInfo({
 							provider: 'weixin',
 							success: function(info) {
 								getOpenIdAPI(loginRes.code).then((res) => {
+									console.log(loginRes.code)
 									if (res.status == 200) {
 										wxLoginAPI({
 											openid: res.message.openid,

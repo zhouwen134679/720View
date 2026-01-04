@@ -141,7 +141,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         a: msg.role === "user"
       }, msg.role === "user" ? {
         b: common_vendor.t(msg.content),
-        c: common_assets._imports_1$3
+        c: common_assets._imports_1$2
       } : {
         d: common_assets._imports_0$2,
         e: $options.parseLineBreak(msg.content)

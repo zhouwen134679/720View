@@ -10,6 +10,33 @@
   padding: 20rpx 0;
   font-family: "阿里妈妈方圆体 VF Regular" !important;
 }
+.content .donor-info.data-v-8cde6161 {
+  width: 90%;
+  margin: auto;
+  padding: 20rpx 0;
+}
+.content .donor-info .title.data-v-8cde6161 {
+  font-weight: bold;
+  padding-bottom: 20rpx;
+}
+.content .donor-info .input-group.data-v-8cde6161 {
+  display: flex;
+  align-items: center;
+  height: 100rpx;
+  border-bottom: 2rpx solid rgba(0, 0, 0, 0.04);
+  width: 100%;
+}
+.content .donor-info .input-group .label.data-v-8cde6161 {
+  width: 20%;
+  font-size: 28rpx;
+}
+.content .donor-info .input-group input.data-v-8cde6161 {
+  width: 80%;
+  font-size: 28rpx;
+  height: 60rpx;
+  border: none;
+  background-color: transparent;
+}
 .content .address.data-v-8cde6161 {
   height: 160rpx;
   width: 100%;

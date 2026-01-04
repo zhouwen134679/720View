@@ -1,7 +1,7 @@
 "use strict";
 const common_vendor = require("../common/vendor.js");
-const domain = "https://duoxie.cc.cd/mazu";
-const base_url = `${domain}:${common_vendor.wx$1.getSystemInfoSync().platform === "devtools" ? 8899 : 6869}`;
+const domain = "https://111.230.37.198";
+const base_url = `${domain}:${common_vendor.wx$1.getSystemInfoSync().platform === "devtools" ? "" : 6869}`;
 const ai_base_url = "http://127.0.0.1:8080";
 const timeout = 5e4;
 const aiWhiteList = ["/user/user/chat", "/user/image/generateimg", "/user/image/mazuCarousel"];
@@ -12,7 +12,7 @@ const request = (params) => {
   let url = params.url;
   let method = (params.method || "get").toLowerCase();
   let data = params.data || {};
-  const finalBaseUrl = isAiWhiteList(url) ? ai_base_url : domain;
+  const finalBaseUrl = isAiWhiteList(url) ? ai_base_url : base_url;
   const token = common_vendor.index.getStorageSync("token");
   let header = {
     "Content-Type": "application/json;charset=UTF-8",
@@ -20,20 +20,20 @@ const request = (params) => {
     ...params.header
     // 外部传入的头优先
   };
-  if (!isAiWhiteList(url)) {
-    header["Blade-Auth"] = token || "";
-    header["Authorization"] = token || "";
+  common_vendor.index.__f__("log", "at utils/request.js:31", "是否为非AI接口：", !isAiWhiteList(url));
+  common_vendor.index.__f__("log", "at utils/request.js:32", "获取到的token：", token);
+  if (!isAiWhiteList(url) && token) {
+    header["Blade-Auth"] = token;
+    header["Authorization"] = token;
   }
   if (method === "post" && !isAiWhiteList(url)) {
-    header = {
-      "Content-Type": "application/json"
-    };
+    header["Content-Type"] = "application/json";
   }
-  common_vendor.index.__f__("log", "at utils/request.js:41", "===== 请求调试信息 =====");
-  common_vendor.index.__f__("log", "at utils/request.js:42", "请求地址:", finalBaseUrl + url);
-  common_vendor.index.__f__("log", "at utils/request.js:43", "是否为AI接口:", isAiWhiteList(url));
-  common_vendor.index.__f__("log", "at utils/request.js:44", "是否免Token:", isAiWhiteList(url));
-  common_vendor.index.__f__("log", "at utils/request.js:45", "请求头:", header);
+  common_vendor.index.__f__("log", "at utils/request.js:45", "===== 请求调试信息 =====");
+  common_vendor.index.__f__("log", "at utils/request.js:46", "请求地址:", finalBaseUrl + url);
+  common_vendor.index.__f__("log", "at utils/request.js:47", "是否为AI接口:", isAiWhiteList(url));
+  common_vendor.index.__f__("log", "at utils/request.js:48", "是否免Token:", isAiWhiteList(url));
+  common_vendor.index.__f__("log", "at utils/request.js:49", "最终请求头:", header);
   return new Promise((resolve, reject) => {
     common_vendor.index.request({
       url: finalBaseUrl + url,
@@ -79,7 +79,7 @@ const request = (params) => {
         }
       },
       fail(err) {
-        common_vendor.index.__f__("error", "at utils/request.js:94", "请求失败详情:", err);
+        common_vendor.index.__f__("error", "at utils/request.js:98", "请求失败详情:", err);
         if (err.errMsg.indexOf("request:fail") !== -1) {
           common_vendor.index.showToast({
             title: "网络异常，请检查连接",

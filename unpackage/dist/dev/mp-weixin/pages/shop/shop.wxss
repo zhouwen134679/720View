@@ -11,7 +11,7 @@
 .container .shop.data-v-2a6aaf81 {
   width: 95%;
   margin: auto;
-  font-family: "阿里妈妈方圆体 VF Regular";
+  font-family: '阿里妈妈方圆体 VF Regular';
 }
 .container .shop .pubuItem.data-v-2a6aaf81 {
   column-count: 2;
@@ -48,7 +48,7 @@
   font-size: 32rpx;
 }
 .shopName.data-v-2a6aaf81 {
-  font-family: "阿里妈妈方圆体 VF Regular";
+  font-family: '阿里妈妈方圆体 VF Regular';
   padding: 40rpx 20rpx;
   color: #4d0000;
 }
@@ -61,10 +61,10 @@
   font-size: 26rpx;
 }
 .input.data-v-2a6aaf81 {
-  font-family: "阿里妈妈方圆体 VF Regular";
+  font-family: '阿里妈妈方圆体 VF Regular';
   width: 95%;
   height: 80rpx;
-  background-color: #FFFBF2;
+  background-color: #fffbf2;
   margin: auto;
   border-radius: 20rpx;
   margin-bottom: 30rpx;
@@ -93,7 +93,7 @@
   align-items: center;
   margin-bottom: 30rpx;
   color: #4d0000;
-  font-family: "阿里妈妈方圆体 VF Regular" !important;
+  font-family: '阿里妈妈方圆体 VF Regular' !important;
 }
 .recommend view.data-v-2a6aaf81 {
   width: 17%;
@@ -109,7 +109,7 @@
   background-color: #4d0000;
 }
 .recommendItem.data-v-2a6aaf81 {
-  font-family: "阿里妈妈方圆体 VF Regular" !important;
+  font-family: '阿里妈妈方圆体 VF Regular' !important;
   width: 95%;
   height: 350rpx;
   margin: auto;

@@ -1,7 +1,6 @@
 {
   "navigationBarTitleText": "",
   "usingComponents": {
-    "page-back": "../../components/title/title",
-    "uni-popup": "../../uni_modules/uni-popup/components/uni-popup/uni-popup"
+    "page-back": "../../components/title/title"
   }
 }

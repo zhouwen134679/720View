@@ -3,10 +3,10 @@
 	<view class="content">
 		<view class="payMoney">
 			<view>
-					兑换所需香火值
+					{{ grid === '公益' ? '捐赠所需金额' : '兑换所需香火值' }}
 			</view>
 			<view class="money">
-					<text>香火值</text>{{price}}
+					<text>{{ grid === '公益' ? '金额' : '香火值' }}</text>{{price}}
 			</view>
 		</view>
 		<view class="payToast">
@@ -36,8 +36,11 @@
 		useUserInfoStore
 	} from "/store/userInfo.js"
 	import {
-		shopPayMoneyAPI
-	} from "../../apis/shop.js"
+				shopPayMoneyAPI
+			} from "../../apis/shop.js"
+			import {
+				incensePayAPI
+			} from "../../apis/user.js"
 	export default {
 		data() {
 			return {
@@ -55,6 +58,7 @@
 				}],
 				price: null,
 				order_id: null,
+				grid: null,
 				currentPaymentMethod: 1
 			};
 		},
@@ -64,6 +68,12 @@
 		onLoad(options) {
 			this.price = options.price
 			this.order_id = options.order_id
+			this.grid = options.grid
+			// 根据商品类型更新页面文本
+			if (this.grid === '公益') {
+				this.titleInfo.title = '捐赠'
+				this.patMent[0].name = `金额捐赠`
+			}
 		},
 		methods: {
 			selectPaymentMethod(id) {
@@ -72,45 +82,87 @@
 			// 支付按钮
 			confirmPay() {
 				uni.showLoading({
-					title: "兑换中",
+					title: this.grid === '公益' ? "捐赠中" : "兑换中",
 					mask: true
 				});
 				setTimeout(() => {
-					switch (this.currentPaymentMethod) {
-						case 1:
-							shopPayMoneyAPI({
-								pay_money: this.price,
-								pay_ment: this.currentPaymentMethod,
-								order_id: this.order_id,
-								user_id: useUserInfoStore().$state.userInfo.id
-							}).then((res) => {
-								if (res.status == 200) {
-									// 更新pinia数据
-									useUserInfoStore().$state.userInfo.balance = res.new_balance
-									uni.showToast({
-										title: res.message,
-										mask: true
-									})
-									setTimeout(() => {
-										uni.navigateBack({
-											delta: 1
+					// 公益商品特殊处理：调用API增加用户香火值
+				if (this.grid === '公益') {
+					// 等价增加用户香火值（捐赠金额=增加的香火值）
+					const store = useUserInfoStore();
+					const donatedAmount = Number(this.price);
+					
+					// 调用API将香火值增加同步到后端数据库
+					incensePayAPI({
+						user_id: store.$state.userInfo.id,
+						amount: donatedAmount
+					}).then((res) => {
+						uni.hideLoading();
+						if (res.status == 200) {
+							// 更新本地香火值
+							store.$state.userInfo.balance = res.newBalance;
+							
+							uni.showToast({
+								title: "捐赠成功，香火值已增加",
+								mask: true
+							})
+							setTimeout(() => {
+								uni.navigateBack({
+									delta: 1
+								})
+							}, 1000)
+						} else {
+							uni.showToast({
+								title: res.message || "捐赠失败，请稍后重试",
+								icon: 'none',
+								mask: true
+							})
+						}
+					}).catch((err) => {
+						uni.hideLoading();
+						uni.showToast({
+							title: "网络异常，请稍后重试",
+							icon: "none"
+						});
+					})
+				} else {
+						// 普通商品原有逻辑
+						switch (this.currentPaymentMethod) {
+							case 1:
+								shopPayMoneyAPI({
+									pay_money: this.price,
+									pay_ment: this.currentPaymentMethod,
+									order_id: this.order_id,
+									user_id: useUserInfoStore().$state.userInfo.id
+								}).then((res) => {
+									if (res.status == 200) {
+										// 更新pinia数据
+										useUserInfoStore().$state.userInfo.balance = res.new_balance
+										uni.showToast({
+											title: res.message,
+											mask: true
 										})
-									}, 1000)
-								} else {
-									uni.showToast({
-										title: res.message,
-										icon: 'none',
-										mask: true
-									})
-								}
-							})
-							break;
-						default:
-							return uni.showToast({
-								title: "未知错误 请联系管理员",
-								icon: 'none'
-							})
-							break;
+										setTimeout(() => {
+											uni.navigateBack({
+												delta: 1
+											})
+										}, 1000)
+									} else {
+										uni.showToast({
+											title: res.message,
+											icon: 'none',
+											mask: true
+										})
+									}
+								})
+								break;
+							default:
+								return uni.showToast({
+									title: "未知错误 请联系管理员",
+									icon: 'none'
+								})
+								break;
+						}
 					}
 				}, 1000)
 			},

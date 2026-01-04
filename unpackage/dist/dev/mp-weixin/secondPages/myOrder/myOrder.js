@@ -257,7 +257,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     f: common_assets._imports_0$2
   } : {
-    g: common_assets._imports_1$2
+    g: common_assets._imports_1$1
   }) : {}, {
     h: common_vendor.o($options.confirmDeleteImage),
     i: common_vendor.o($options.dialogClose),

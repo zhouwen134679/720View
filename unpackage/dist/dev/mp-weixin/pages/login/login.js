@@ -22,10 +22,12 @@ const _sfc_main = {
       common_vendor.index.login({
         provider: "weixin",
         success: function(loginRes) {
+          common_vendor.index.__f__("log", "at pages/login/login.vue:51", 1123);
           common_vendor.index.getUserInfo({
             provider: "weixin",
             success: function(info) {
               apis_user.getOpenIdAPI(loginRes.code).then((res) => {
+                common_vendor.index.__f__("log", "at pages/login/login.vue:57", loginRes.code);
                 if (res.status == 200) {
                   apis_user.wxLoginAPI({
                     openid: res.message.openid,
@@ -50,7 +52,7 @@ const _sfc_main = {
                         });
                       }, 1e3);
                       apis_user.userVisitCountAPI(res2.user.id).then((res3) => {
-                        common_vendor.index.__f__("log", "at pages/login/login.vue:79", res3.message);
+                        common_vendor.index.__f__("log", "at pages/login/login.vue:81", res3.message);
                         common_vendor.index.showToast({
                           title: "登录成功",
                           mask: true
